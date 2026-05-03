@@ -113,6 +113,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        cache: 'maven'
 
     - name: Run OWASP Dependency Check
       run: mvn org.owasp:dependency-check-maven:check -DfailOnCVSS=7.0 -Dformat=HTML,JSON -DoutputDirectory=dependency-check-report
@@ -141,7 +142,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    
+        cache: 'maven'
+        
     - name: Cache SonarQube dependencies
       uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
