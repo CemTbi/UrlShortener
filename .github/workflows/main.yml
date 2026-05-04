@@ -161,11 +161,12 @@ jobs:
     - name: Build and analyze with SonarQube
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn verify sonar:sonar \
-            -Dsonar.projectKey=CemTbi_UrlShortener \
-            -Dsonar.organization=cemtbi \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      run: |
+        mvn verify sonar:sonar \
+              -Dsonar.projectKey=CemTbi_UrlShortener \
+              -Dsonar.organization=cemtbi \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
 
   # SonarQube Quality Gate job
