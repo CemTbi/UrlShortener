@@ -332,14 +332,38 @@ jobs:
     needs: Docker-Push-GHCR
 
     if: github.ref == 'refs/heads/main'
+
+    permissions:
+      packages: read
+
     steps:
     - name: code checkout
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
 
-    - name: Run local integration tests against Docker image
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Pull Docker image from GHCR and test image
       run: |
-        docker run --rm -d -p 8080:8080 --name urlshortener-test ghcr.io/${{ github.repository_owner }}/urlshortener:latest
-        sleep 30 # Wait for the application to start
+
+        # Pull image
+        IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/urlshortener:latest
+        docker pull ${IMAGE_NAME}
+
+        # Run container
+        docker run -d -p 8080:8080 --name urlshortener-test ${IMAGE_NAME}
+
+        # Wait for the application to start up
+        sleep 10
+
+        # Perform a health check to verify the application is running
         curl -f http://localhost:8080/actuator/health || exit 1
+
+        # Cleanup
+        docker stop urlshortener-test && docker rm urlshortener-test
