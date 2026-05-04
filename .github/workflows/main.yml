@@ -91,7 +91,7 @@ jobs:
         path: target/
 
     - name: Run Integration Tests
-      run: mvn verify -Pintegration-tests -DskipUnitTests
+      run: mvn verify -Pintegration-tests -DskipUnitTests -Ddependency-check.skip=true
 
 
   # OWASP Dependency Check job to perform security scanning on the codebase
@@ -123,7 +123,7 @@ jobs:
     - name: Run OWASP Dependency Check
       env:
         NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-      run: mvn verify -DskipTests -Dnvd.api.key=${{ secrets.NVD_API_KEY }} -DoutputDirectory=dependency-check-report
+      run: mvn verify -DskipTests -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DoutputDirectory=dependency-check-report
 
     - name: Upload OWASP Dependency Check report
       if: always()
@@ -162,7 +162,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        mvn verify sonar:sonar \
+        mvn verify sonar:sonar -Ddependency-check.skip=true \
               -Dsonar.projectKey=CemTbi_UrlShortener \
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
