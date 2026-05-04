@@ -220,7 +220,7 @@ jobs:
   # Docker Build job
   Docker-Build:
     runs-on: ubuntu-latest
-    needs: [Build, Unit-Tests, Integration-Tests, SonarQube-Quality-Gate]
+    needs: [Build, Units-Tests, Integration-Tests, OWASP-Dependency-Check, SonarQube-Quality-Gate, Trivy-Filesystem-Scan]
 
     if: github.ref == 'refs/heads/main'
     steps:
@@ -285,6 +285,7 @@ jobs:
       with:
         name: trivy-image-scan-results
         path: trivy-image-results.sarif
+
 
   # Docker Push to GHCR
   Docker-Push-GHCR:
@@ -351,7 +352,6 @@ jobs:
     
     - name: Pull Docker image from GHCR and test image
       run: |
-
         # Pull image
         IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/urlshortener:latest
         docker pull ${IMAGE_NAME}
