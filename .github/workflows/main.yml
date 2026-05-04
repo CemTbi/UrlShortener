@@ -112,10 +112,21 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
+    - name: Cache OWASP Dependency Check data
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: owasp-data
+        key: ${{ runner.os }}-owasp-db
+        restore-keys: |
+          ${{ runner.os }}-owasp-db
+
     - name: Run OWASP Dependency Check
-      run: mvn org.owasp:dependency-check-maven:check -DfailOnCVSS=7.0 -Dformat=HTML,JSON -DoutputDirectory=dependency-check-report
+      env:
+        NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      run: mvn verify -DskipTests -Dnvd.api.key=${{ secrets.NVD_API_KEY }} -DoutputDirectory=dependency-check-report
 
     - name: Upload OWASP Dependency Check report
+      if: always()
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: owasp-reports
