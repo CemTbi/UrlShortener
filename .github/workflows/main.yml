@@ -90,7 +90,7 @@ jobs:
         path: target/
 
     - name: Run Integration Tests
-      run: mvn verify -Pintegration-tests -DskipUnitTests -Ddependency-check.skip=true
+      run: mvn verify -Pintegration-tests -DskipUnitTests
 
 
   # OWASP Dependency Check job to perform security scanning on the codebase
@@ -114,22 +114,31 @@ jobs:
     - name: Cache OWASP Dependency Check data
       uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
-        path: owasp-data
-        key: ${{ runner.os }}-owasp-db-${{ github.run_id }}
+        path: |
+          ~/.m2/repository/org/owasp/dependency-check-data
+          **/target/dependency-check-data
+        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-owasp-db-
+          ${{ runner.os }}-owasp-data-
 
     - name: Run OWASP Dependency Check
       env:
         NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-      run: mvn verify -DskipTests -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DdataDirectory=owasp-data -DoutputDirectory=dependency-check-report
+      run: |
+        mvn clean verify \
+        -Powasp-dependency-check \
+        -DskipTests \
+        -DnvdApiKey=${{ secrets.NVD_API_KEY }}  
 
     - name: Upload OWASP Dependency Check report
       if: always()
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
-        name: owasp-reports
-        path: target/dependency-check-report.*
+        name: dependency-check-report
+        path: |
+          **/target/dependency-check-report.html
+          **/target/dependency-check-report.json
+        retention-days: 30
 
   
   # SonarQube analysis job to perform static code analysis for maven projects
@@ -161,11 +170,11 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        mvn verify sonar:sonar -Ddependency-check.skip=true \
+        mvn verify sonar:sonar \
               -Dsonar.projectKey=CemTbi_UrlShortener \
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+              -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
               -Dsonar.qualitygate.wait=true
     
     - name: Handle Quality Gate failure

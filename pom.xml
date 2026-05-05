@@ -152,42 +152,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
-			<!-- Failsafe Integration Tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- OWASP, CVE check-->
-			<plugin>
-				<groupId>org.owasp</groupId>
-				<artifactId>dependency-check-maven</artifactId>
-				<version>${owasp.version}</version>
-				<configuration>
-					<failBuildOnCVSS>7</failBuildOnCVSS>
-					<formats>
-						<format>HTML</format>
-						<format>JSON</format>
-					</formats>
-					<dataDirectory>${project.basedir}/owasp-data</dataDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -261,4 +225,69 @@
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>integration-tests</id>
+			<build>
+				<plugins>
+					<!-- Failsafe Integration Tests -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>owasp-dependency-check</id>
+			<build>
+				<plugins>
+					<!-- OWASP, CVE check-->
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${owasp.version}</version>
+						<configuration>
+							<!-- Fail the build if any CVSS score is 7 or higher -->
+							<failBuildOnCVSS>7</failBuildOnCVSS>
+
+							<formats>
+								<format>HTML</format>
+								<format>JSON</format>
+							</formats>
+
+							<!-- Disable the assembly analyzer to speed up the
+							scan -->
+							<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+
+							<!-- Skip test and provided scope dependencies -->
+							<skipTestScope>true</skipTestScope>
+							<skipProvidedScope>true</skipProvidedScope>
+
+							<dataDirectory>
+								${project.build.directory}/dependency-check-data</dataDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
