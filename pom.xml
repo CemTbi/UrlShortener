@@ -274,8 +274,7 @@
 							<skipTestScope>true</skipTestScope>
 							<skipProvidedScope>true</skipProvidedScope>
 
-							<dataDirectory>
-								${project.build.directory}/dependency-check-data</dataDirectory>
+							<dataDirectory>${user.home}/.owasp-dependency-check</dataDirectory>
 						</configuration>
 						<executions>
 							<execution>
