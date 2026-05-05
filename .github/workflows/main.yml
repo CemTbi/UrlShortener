@@ -122,7 +122,7 @@ jobs:
     - name: Run OWASP Dependency Check
       env:
         NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-      run: mvn verify -DskipTests -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DoutputDirectory=dependency-check-report
+      run: mvn verify -DskipTests -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DdataDirectory=owasp-data -DoutputDirectory=dependency-check-report
 
     - name: Upload OWASP Dependency Check report
       if: always()
@@ -166,12 +166,7 @@ jobs:
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-
-    # Quality Gate check 
-    - name: Check SonarQube Quality Gate status
-      uses: sonarsource/sonarqube-quality-gate-action@5a8df806f0c5ac1fb76a2779e927f7e38f88137f # v1.2.0
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+              -Dsonar.qualitygate.wait=true
     
     - name: Handle Quality Gate failure
       if: failure()
