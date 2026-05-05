@@ -221,7 +221,7 @@ jobs:
   # Docker Build job
   Docker-Build:
     runs-on: ubuntu-latest
-    needs: [Build, Unit-Tests, Integration-Tests, OWASP-Dependency-Check, SonarQube-Quality-Gate, Trivy-Filesystem-Scan]
+    needs: [Build, Unit-Tests, Integration-Tests, OWASP-Dependency-Check, SonarQube-Analysis, Trivy-Filesystem-Scan]
 
     steps:
     - name: Code checkout
