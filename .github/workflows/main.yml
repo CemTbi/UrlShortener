@@ -116,8 +116,8 @@ jobs:
       uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
         path: ~/.owasp-dependency-check
-        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }} 
-        restore-keys: ${{ runner.os }}-owasp-data-
+        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-owasp-
 
     - name: Run OWASP Dependency Check
       env:
