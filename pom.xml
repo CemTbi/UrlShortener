@@ -24,6 +24,7 @@
 		<owasp.version>12.2.0</owasp.version>
 		<jacoco.version>0.8.11</jacoco.version>
 		<contract-verifier.version>5.0.2</contract-verifier.version>
+		<postgresql.version>42.7.11</postgresql.version>
 
 		<!-- SonarQube config -->
 		<sonar.organization>cemtbi</sonar.organization>
@@ -82,6 +83,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
