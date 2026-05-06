@@ -260,6 +260,11 @@
 						<artifactId>dependency-check-maven</artifactId>
 						<version>${owasp.version}</version>
 						<configuration>
+
+							<suppressionFiles>
+								<suppressionFile>suppression.xml</suppressionFile>
+							</suppressionFiles>
+
 							<!-- Fail the build if any CVSS score is 7 or higher -->
 							<failBuildOnCVSS>7</failBuildOnCVSS>
 
@@ -268,8 +273,7 @@
 								<format>JSON</format>
 							</formats>
 
-							<!-- Disable the assembly analyzer to speed up the
-							scan -->
+							<!-- Disable the assembly analyzer to speed up the scan -->
 							<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
 
 							<!-- Skip test and provided scope dependencies -->
