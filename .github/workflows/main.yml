@@ -118,14 +118,6 @@ jobs:
         path: ~/.owasp-dependency-check
         key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }} 
         restore-keys: ${{ runner.os }}-owasp-data-
-      
-    - name: Always Save OWASP Check
-      id: cache-owasp-check-save
-      if: always()
-      uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-      with:
-        path: ~/.owasp-dependency-check
-        key: ${{ steps.cache-owasp-check-restore.outputs.cache-primary-key }}
 
     - name: Run OWASP Dependency Check
       env:
@@ -145,6 +137,14 @@ jobs:
           **/target/dependency-check-report.html
           **/target/dependency-check-report.json
         retention-days: 30
+
+    - name: Always Save OWASP Check
+      id: cache-owasp-check-save
+      if: always()
+      uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: ~/.owasp-dependency-check
+        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }} 
 
   
   # SonarQube analysis job to perform static code analysis for maven projects
