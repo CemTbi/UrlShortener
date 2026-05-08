@@ -373,7 +373,7 @@ jobs:
         docker run -d -p 8080:8080 --name urlshortener-test ${IMAGE_NAME}
 
         # Wait for the application to start up
-        sleep 10
+        sleep 30
 
         # Perform a health check to verify the application is running
         curl -f http://localhost:8080/actuator/health || exit 1
