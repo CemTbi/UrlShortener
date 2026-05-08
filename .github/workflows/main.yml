@@ -113,11 +113,13 @@ jobs:
 
     - name: Restore cached OWASP Check
       id: cache-owasp-check-restore
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
         path: ~/.owasp-dependency-check
-        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-owasp-
+        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}-
+          ${{ runner.os }}-owasp-
 
     - name: Run OWASP Dependency Check
       env:
@@ -137,14 +139,6 @@ jobs:
           **/target/dependency-check-report.html
           **/target/dependency-check-report.json
         retention-days: 30
-
-    - name: Always Save OWASP Check
-      id: cache-owasp-check-save
-      if: always() && steps.cache-owasp-check-restore.outputs.cache-hit != 'true'
-      uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-      with:
-        path: ~/.owasp-dependency-check
-        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
 
   
   # SonarQube analysis job to perform static code analysis for maven projects
@@ -373,10 +367,14 @@ jobs:
         docker run -d -p 8080:8080 --name urlshortener-test ${IMAGE_NAME}
 
         # Wait for the application to start up
-        sleep 30
+        sleep 15
 
         # Perform a health check to verify the application is running
-        curl -f http://localhost:8080/actuator/health || exit 1
+        if ! curl -f http://localhost:8080/actuator/health; then
+          echo "ERROR: Application is not running. Container-Logs:"
+          docker logs urlshortener-test
+          exit 1
+        fi
 
         # Cleanup
         docker stop urlshortener-test && docker rm urlshortener-test
