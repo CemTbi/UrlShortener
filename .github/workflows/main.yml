@@ -140,11 +140,11 @@ jobs:
 
     - name: Always Save OWASP Check
       id: cache-owasp-check-save
-      if: always()
+      if: always() && steps.cache-owasp-check-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
         path: ~/.owasp-dependency-check
-        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }} 
+        key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
 
   
   # SonarQube analysis job to perform static code analysis for maven projects
@@ -331,7 +331,8 @@ jobs:
 
     - name: Tag and push Docker image to GHCR
       run: |
-        IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/urlshortener
+        REP_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+        IMAGE_NAME=ghcr.io/${REP_OWNER}/urlshortener
         docker tag urlshortener:latest ${IMAGE_NAME}:latest
         docker tag urlshortener:latest ${IMAGE_NAME}:${{ github.sha }}
         docker push ${IMAGE_NAME}:latest
@@ -364,7 +365,8 @@ jobs:
     - name: Pull Docker image from GHCR and test image
       run: |
         # Pull image
-        IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/urlshortener:latest
+        REP_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+        IMAGE_NAME=ghcr.io/${REP_OWNER}/urlshortener:latest
         docker pull ${IMAGE_NAME}
 
         # Run container
