@@ -363,8 +363,8 @@ jobs:
         IMAGE_NAME=ghcr.io/${REP_OWNER}/urlshortener:latest
         docker pull ${IMAGE_NAME}
 
-        # Run container
-        docker run -d -p 8080:8080 --name urlshortener-test ${IMAGE_NAME}
+        # start db container
+        DB_HOST=db docker compose up
 
         # Wait for the application to start up
         sleep 15
@@ -372,9 +372,9 @@ jobs:
         # Perform a health check to verify the application is running
         if ! curl -f http://localhost:8080/actuator/health; then
           echo "ERROR: Application is not running. Container-Logs:"
-          docker logs urlshortener-test
+          docker compose logs app
           exit 1
         fi
 
         # Cleanup
-        docker stop urlshortener-test && docker rm urlshortener-test
+        docker compose down
