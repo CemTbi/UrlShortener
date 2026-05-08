@@ -15,7 +15,7 @@ services:
   app:
     build:
       context: .                   
-      dockerfile: Dockerfiles/app
+      dockerfile: Dockerfiles/app/Dockerfile
     image: urlshortener:latest
     container_name: urlshortener-app
     depends_on:
