@@ -31,7 +31,7 @@ jobs:
       run: mvn clean install -DskipTests
 
     - name: Resolve test plugins for offline use
-      run: mvn dependency:resolve-plugins -Pplugin-resolution 2>/dev/null || mvn surefire:help failsafe:help -q
+      run: mvn dependency:resolve-plugins 2>/dev/null || mvn surefire:help failsafe:help -q
 
     - name: Upload artifact (JAR)
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
