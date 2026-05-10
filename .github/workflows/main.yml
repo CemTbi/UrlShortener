@@ -145,8 +145,7 @@ jobs:
       run: |
         mvn clean verify \
         -Powasp-dependency-check \
-        -DskipTests \
-        -DnvdApiKey=${{ secrets.NVD_API_KEY }}  
+        -DskipTests 
 
     - name: Upload OWASP Dependency Check report
       if: always()
