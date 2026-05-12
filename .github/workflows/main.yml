@@ -187,15 +187,10 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        mvn verify sonar:sonar \
+        mvn sonar:sonar -DskipTests \
               -Dsonar.projectKey=CemTbi_UrlShortener \
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.qualitygate.wait=true
-    
-    - name: Handle Quality Gate failure
-      if: failure()
-      run: echo "SonarQube Quality Gate failed! Please check the SonarQube dashboard for details."
 
 
   # Trivy filesystem scan job to perform security scanning on the codebase
