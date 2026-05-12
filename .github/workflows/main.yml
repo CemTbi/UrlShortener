@@ -187,7 +187,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        mvn sonar:sonar -DskipTests \
+        mvn verify sonar:sonar -DskipTests \
               -Dsonar.projectKey=CemTbi_UrlShortener \
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
