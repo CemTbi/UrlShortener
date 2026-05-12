@@ -108,7 +108,7 @@ jobs:
     #    path: ~/.m2/repository
 
     - name: Run Integration Tests
-      run: mvn verify -Pintegration-tests -DskipUnitTests
+      run: mvn clean verify -Pintegration-tests -DskipUnitTests
 
 
   # OWASP Dependency Check job to perform security scanning on the codebase
@@ -187,7 +187,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        mvn verify sonar:sonar -DskipTests \
+        mvn clean verify sonar:sonar -DskipTests \
               -Dsonar.projectKey=CemTbi_UrlShortener \
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
