@@ -25,6 +25,7 @@
 		<jacoco.version>0.8.11</jacoco.version>
 		<contract-verifier.version>5.0.2</contract-verifier.version>
 		<postgresql.version>42.7.11</postgresql.version>
+		<tomcat.version>11.0.22</tomcat.version>
 
 		<!-- SonarQube config -->
 		<sonar.organization>cemtbi</sonar.organization>

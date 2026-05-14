@@ -76,12 +76,12 @@ jobs:
     - name: Run Unit Tests
       run: mvn clean test
 
-    - name: Upload Unit Test JaCoCo Report
+    - name: Upload Unit Test exec
       if: always()
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
-        name: jacoco-report-unit
-        path: target/site/jacoco/jacoco.xml
+        name: jacoco-ut
+        path: target/jacoco-ut.exec
 
 
   # Integration tests job to run integration tests on the main branch
@@ -117,12 +117,12 @@ jobs:
     - name: Run Integration Tests
       run: mvn clean verify -Pintegration-tests -DskipUnitTests
 
-    - name: Upload Integration Test JaCoCo Report
+    - name: Upload Integration Test exec
       if: always()
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
-        name: jacoco-report-it
-        path: target/site/jacoco/jacoco.xml
+        name: jacoco-it
+        path: target/jacoco-it.exec
 
 
   # OWASP Dependency Check job to perform security scanning on the codebase
@@ -197,23 +197,23 @@ jobs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
 
-    - name: Download Unit Test Report
-      uses: actions/download-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+    - name: Download Unit Test exec
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
-        name: jacoco-report-unit
-        path: target/jacoco-reports/unit
+        name: jacoco-ut
+        path: target/
 
-    - name: Download Integration Test Report
-      uses: actions/download-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+    - name: Download Integration Test exec
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
-        name: jacoco-report-it
-        path: target/jacoco-reports/it
+        name: jacoco-it
+        path: target/
 
     - name: Build and analyze with SonarQube
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        mvn clean verify sonar:sonar -DskipTests \
+        mvn jacoco:merge jacoco:report sonar:sonar -DskipTests \
               -Dsonar.projectKey=CemTbi_UrlShortener \
               -Dsonar.organization=cemtbi \
               -Dsonar.host.url=https://sonarcloud.io \
