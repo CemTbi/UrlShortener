@@ -195,17 +195,17 @@ jobs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
 
-#    - name: Download Unit Test exec
-#      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-#      with:
-#        name: jacoco-ut
-#        path: target/
-
-    - name: Download Integration Test exec
+    - name: Download Unit Test exec
       uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
-        name: jacoco-it
+        name: jacoco-ut
         path: target/
+
+#    - name: Download Integration Test exec
+#      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#      with:
+#        name: jacoco-it
+#        path: target/
 
     - name: Build and analyze with SonarQube
       env:
