@@ -30,10 +30,16 @@ jobs:
     - name: Maven Build
       run: mvn clean install -DskipTests
 
-    - name: Upload artifact (JAR)
+    - name: Upload classes
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
-        name: urlshortener
+        name: urlshortener-classes
+        path: target/classes
+
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: urlshortener-jar
         path: target/*.jar
 
 #    - name: Upload Maven repository cache
@@ -64,7 +70,7 @@ jobs:
     - name: Download JAR artifact
       uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
-        name: urlshortener
+        name: urlshortener-jar
         path: target/
     
 #    - name: Restore Maven repository cache
@@ -104,7 +110,7 @@ jobs:
     - name: Download JAR artifact
       uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
-        name: urlshortener
+        name: urlshortener-jar
         path: target/
 
     #- name: Restore Maven repository cache
@@ -154,10 +160,7 @@ jobs:
     - name: Run OWASP Dependency Check
       env:
         NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-      run: |
-        mvn clean verify \
-        -Powasp-dependency-check \
-        -DskipTests 
+      run: mvn clean verify -Powasp-dependency-check -DskipTests 
 
     - name: Upload OWASP Dependency Check report
       if: always()
@@ -194,6 +197,12 @@ jobs:
         path: ~/.sonar
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
+    
+    - name: Download classes
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      with:
+          name: urlshortener-classes
+          path: target/classes
 
     - name: Download Unit Test exec
       uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
