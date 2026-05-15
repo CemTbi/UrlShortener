@@ -20,7 +20,7 @@
 	<properties>
 		<!-- Versions -->
 		<java.version>17</java.version>
-		<testcontainer.version>1.21.3</testcontainer.version>
+		<testcontainer.version>1.21.4</testcontainer.version>
 		<owasp.version>12.2.0</owasp.version>
 		<jacoco.version>0.8.11</jacoco.version>
 		<contract-verifier.version>5.0.2</contract-verifier.version>
