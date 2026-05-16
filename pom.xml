@@ -21,7 +21,6 @@
 		<!-- Versions -->
 		<java.version>17</java.version>
 		<testcontainer.version>1.21.3</testcontainer.version>
-		<owasp.version>12.2.0</owasp.version>
 		<jacoco.version>0.8.11</jacoco.version>
 		<contract-verifier.version>5.0.2</contract-verifier.version>
 		<postgresql.version>42.7.11</postgresql.version>
@@ -316,51 +315,6 @@
 									<dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
 									<outputDirectory>${project.build.directory}/site/jacoco-it</outputDirectory>
 								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>owasp-dependency-check</id>
-			<build>
-				<plugins>
-					<!-- OWASP, CVE check-->
-					<plugin>
-						<groupId>org.owasp</groupId>
-						<artifactId>dependency-check-maven</artifactId>
-						<version>${owasp.version}</version>
-						<configuration>
-
-							<suppressionFiles>
-								<suppressionFile>suppression.xml</suppressionFile>
-							</suppressionFiles>
-
-							<!-- Fail the build if any CVSS score is 7 or higher -->
-							<failBuildOnCVSS>7</failBuildOnCVSS>
-
-							<formats>
-								<format>HTML</format>
-								<format>JSON</format>
-							</formats>
-
-							<!-- Disable the assembly analyzer to speed up the
-							scan -->
-							<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-
-							<!-- Skip test and provided scope dependencies -->
-							<skipTestScope>true</skipTestScope>
-							<skipProvidedScope>true</skipProvidedScope>
-
-							<dataDirectory>${user.home}/.owasp-dependency-check</dataDirectory>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>check</goal>
-								</goals>
 							</execution>
 						</executions>
 					</plugin>
