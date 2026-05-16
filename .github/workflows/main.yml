@@ -46,7 +46,6 @@ jobs:
   # Unit tests job to run tests on the main branch
   Unit-Tests:
     runs-on: ubuntu-latest
-    needs: Build
 
     steps:
     - name: Code checkout
@@ -74,7 +73,6 @@ jobs:
   # Integration tests job to run integration tests on the main branch
   Integration-Tests:
     runs-on: ubuntu-latest
-    needs: Build
 
     steps:
     - name: Code checkout
@@ -156,7 +154,6 @@ jobs:
   # Trivy filesystem scan job to perform security scanning on the codebase
   Trivy-Filesystem-Scan:
     runs-on: ubuntu-latest
-    needs: Build
 
     permissions:
       security-events: write
@@ -225,6 +222,7 @@ jobs:
       with:
         name: docker-image
         path: urlshortener-latest.tar
+        retention-days: 1
       
 
   # Trivy image scan job to perform security scanning on the built Docker image
