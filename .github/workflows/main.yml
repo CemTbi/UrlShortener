@@ -25,7 +25,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: 'maven'
+
+    - name: Cache Maven repository
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
 
     - name: Maven Build
       run: mvn clean package -DskipTests
@@ -35,6 +41,7 @@ jobs:
       with:
         name: urlshortener-classes
         path: target/classes
+        retention-days: 1
 
 
   # Unit tests job to run tests on the main branch
@@ -53,6 +60,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: 'maven'
+    
+    - name: Cache Maven repository
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
 
     - name: Run Unit Tests
       run: mvn test
@@ -62,6 +76,7 @@ jobs:
       with:
         name: jacoco-ut
         path: target/jacoco-ut.exec
+        retention-days: 1
 
 
   # Integration tests job to run integration tests on the main branch
@@ -81,6 +96,13 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
+    - name: Cache Maven repository
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
+
     - name: Run Integration Tests
       run: mvn verify -Pintegration-tests -DskipUnitTests
 
@@ -89,6 +111,7 @@ jobs:
 #      with:
 #        name: jacoco-it
 #        path: target/jacoco-it.exec
+#        retention-days: 1
 
   
   # SonarQube analysis job to perform static code analysis for maven projects
@@ -107,7 +130,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: 'maven'
+    
+    - name: Cache Maven repository
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
 
     - name: Cache SonarQube dependencies
       uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
@@ -182,6 +211,7 @@ jobs:
       with:
         name: trivy-filesystem-scan-results
         path: trivy-fs-results.sarif
+        retention-days: 1
 
 
   # Docker Build job
@@ -267,6 +297,7 @@ jobs:
       with:
         name: trivy-image-scan-results
         path: trivy-image-results.sarif
+        retention-days: 1
 
 
   # Docker Push to GHCR
