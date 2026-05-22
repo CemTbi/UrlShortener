@@ -29,16 +29,18 @@ public class Url {
 	private String originalUrl;
 
 	@Column(nullable = false, unique = true, length = 10)
-	private String shortCode;
+	private String code;
 
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
+	@Column(nullable = true)
+	private LocalDateTime expiresAt;
+
 	@Column(nullable = false)
 	private long clickCount = 0;
 
-	@Column(nullable = true)
-	private LocalDateTime expiresAt;
+	
 
 }
