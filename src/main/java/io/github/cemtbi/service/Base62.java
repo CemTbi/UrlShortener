@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Component
 public final class Base62 {
 
-	private static final char[] ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-			.toCharArray();
+	private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            
 
 	private static final int BASE = ALPHABET.length;
 
@@ -21,11 +21,12 @@ public final class Base62 {
 		if (length <= 0)
 			throw new IllegalArgumentException("Length must be greater than 0");
 
-		char[] result = new char[length];
+		StringBuilder sb = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
-			result[i] = ALPHABET[RANDOM.nextInt(BASE)];
+            int randomIndex = RANDOM.nextInt(BASE);
+			sb.append(ALPHABET.charAt(randomIndex));
 		}
-		return new String(result);
+		return sb.toString();
 	}
 
 }
