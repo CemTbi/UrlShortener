@@ -13,7 +13,7 @@ public final class Base62 {
 	private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             
 
-	private static final int BASE = ALPHABET.length;
+	private static final int BASE = ALPHABET.length(); // OR "RADIX"
 
 	private static final SecureRandom RANDOM = new SecureRandom();
 
