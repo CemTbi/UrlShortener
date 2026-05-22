@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Table(name = "urls")
@@ -25,9 +26,11 @@ public class Url {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NonNull
 	@Column(nullable = false, length = 2048)
 	private String originalUrl;
 
+	@NonNull
 	@Column(nullable = false, unique = true, length = 10)
 	private String code;
 
@@ -35,12 +38,11 @@ public class Url {
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
+	@NonNull
 	@Column(nullable = true)
 	private LocalDateTime expiresAt;
 
 	@Column(nullable = false)
 	private long clickCount = 0;
-
-	
 
 }
