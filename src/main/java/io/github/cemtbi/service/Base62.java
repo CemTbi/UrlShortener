@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public final class Base62 {
 
 	private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            
 
 	private static final int BASE = ALPHABET.length(); // OR "RADIX"
 
@@ -28,5 +27,4 @@ public final class Base62 {
 		}
 		return sb.toString();
 	}
-
 }
