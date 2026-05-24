@@ -1,6 +1,6 @@
 package io.github.cemtbi.model.entity;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -31,16 +31,16 @@ public class Url {
 	private String originalUrl;
 
 	@NonNull
-	@Column(nullable = false, unique = true, length = 10)
+	@Column(nullable = false, unique = true, length = 32)
 	private String code;
 
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
-	private LocalDateTime createdAt;
+	private Instant createdAt = Instant.now();
 
 	@NonNull
 	@Column(nullable = true)
-	private LocalDateTime expiresAt;
+	private Instant expiresAt;
 
 	@Column(nullable = false)
 	private long clickCount = 0;
