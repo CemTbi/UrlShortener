@@ -1,5 +1,8 @@
 package io.github.cemtbi.service;
 
-public class UrlService {
+import org.springframework.stereotype.Service;
 
+@Service
+public class UrlService {
+    
 }

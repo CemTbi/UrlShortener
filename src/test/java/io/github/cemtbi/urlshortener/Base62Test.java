@@ -11,6 +11,7 @@ import io.github.cemtbi.service.Base62;
 @SpringBootTest
 @ActiveProfiles("test")
 class Base62Test {
+	
 	@Test
 	void testRandomCodeProperties() {
 		int targetLength = 7;
