@@ -11,5 +11,4 @@ class UrlshortenerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
