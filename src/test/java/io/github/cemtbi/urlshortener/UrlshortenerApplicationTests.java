@@ -9,6 +9,5 @@ import org.springframework.test.context.ActiveProfiles;
 class UrlshortenerApplicationTests {
 
 	@Test
-	void contextLoads() {
-	}
+	void contextLoads() {}
 }
