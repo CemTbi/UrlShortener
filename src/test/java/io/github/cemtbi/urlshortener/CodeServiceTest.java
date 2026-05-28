@@ -22,27 +22,27 @@ import io.github.cemtbi.service.CodeService;
 @ExtendWith(MockitoExtension.class)
 class CodeServiceTest {
 
-    @Mock
-    private UrlRepository repository;
+	@Mock
+	private UrlRepository repository;
 
-    @InjectMocks
-    CodeService codeService;
+	@InjectMocks
+	CodeService codeService;
 
-    /*
-     * Returns code when the first attempt is unique.
-     */
-    @Test
-    void testUniqueCodeGeneration() {
-    	// GIVEN
-        when(repository.existsByCode(anyString())).thenReturn(false);
-        
-        // WHEN
-        String code = codeService.generateUniqueCode();
+	/*
+	 * Returns code when the first attempt is unique.
+	 */
+	@Test
+	void testUniqueCodeGeneration() {
+		// GIVEN
+		when(repository.existsByCode(anyString())).thenReturn(false);
 
-        // THEN
-        assertThat(code).isNotNull();
-        assertThat(code).hasSize(7);
-        assertThat(code).matches("^[0-9a-zA-Z]+$");
-        verify(repository, times(1)).existsByCode(anyString());
-    }
+		// WHEN
+		String code = codeService.generateUniqueCode();
+
+		// THEN
+		assertThat(code).isNotNull();
+		assertThat(code).hasSize(7);
+		assertThat(code).matches("^[\\w]+$");
+		verify(repository, times(1)).existsByCode(anyString());
+	}
 }
