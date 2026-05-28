@@ -1,6 +1,9 @@
 package io.github.cemtbi.urlshortener;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +14,7 @@ import io.github.cemtbi.service.Base62;
 @SpringBootTest
 @ActiveProfiles("test")
 class Base62Test {
-	
+
 	@Test
 	void testRandomCodeProperties() {
 		int targetLength = 7;
@@ -22,7 +25,7 @@ class Base62Test {
 
 		// 2. Test: Only valid characters (0-9, A-Z, a-z)
 		// (0-9, A-Z, a-z)
-		assertTrue(code.matches("^[0-9A-Za-z]+$"), "The code contains invalid special characters.");
+		assertTrue(code.matches("^[\\w]+$"), "The code contains invalid special characters.");
 	}
 
 	@Test

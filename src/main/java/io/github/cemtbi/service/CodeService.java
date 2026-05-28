@@ -22,14 +22,14 @@ public class CodeService {
 				return code;
 			}
 		}
-		throw new RuntimeException("Failed to generate unique code");
+		throw new IllegalArgumentException("Failed to generate unique code");
 	}
 
 	public String validateAlias(String alias) {
 		if (alias == null || alias.isBlank()) {
 			throw new IllegalArgumentException("Alias cannot be null or blank");
 		}
-		if (!alias.matches("^[0-9a-zA-Z_]{3,32}$")) {
+		if (!alias.matches("^[\\w]{3,32}$")) {
 			throw new IllegalArgumentException(
 					"Alias must be 3-32 characters long and can only contain letters, digits, and underscores");
 		}
