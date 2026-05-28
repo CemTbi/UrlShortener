@@ -40,9 +40,10 @@ class CodeServiceTest {
 		String code = codeService.generateUniqueCode();
 
 		// THEN
-		assertThat(code).isNotNull();
-		assertThat(code).hasSize(7);
-		assertThat(code).matches("^[\\w]+$");
+		assertThat(code).isNotNull()
+                        .hasSize(7)
+                        .matches("^[\\w]+$");
+                        
 		verify(repository, times(1)).existsByCode(anyString());
 	}
 }
