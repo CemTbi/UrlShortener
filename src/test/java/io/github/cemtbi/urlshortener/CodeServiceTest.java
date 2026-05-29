@@ -46,4 +46,29 @@ class CodeServiceTest {
                         
 		verify(repository, times(1)).existsByCode(anyString());
 	}
+
+	/*
+	 * Successfully generates a unique code after multiple attempts.
+	 */
+	@Test
+	void testUniqueCodeGenerationWithRetries() {
+		// GIVEN
+		when(repository.existsByCode(anyString()))
+			.thenReturn(true)  
+			.thenReturn(true) 
+			.thenReturn(true)
+			.thenReturn(true) 
+			.thenReturn(false); 
+
+		// WHEN
+		String code = codeService.generateUniqueCode();
+
+		// THEN
+		assertThat(code).isNotNull()
+						.hasSize(7)
+						.matches("^[\\w]+$");
+						
+		verify(repository, times(5)).existsByCode(anyString());
+	}
+
 }
