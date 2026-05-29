@@ -192,7 +192,8 @@
 						</goals>
 						<configuration>
 							<dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
-							<outputDirectory>${project.build.directory}/site/jacoco-ut</outputDirectory>
+							<outputDirectory>
+								${project.build.directory}/site/jacoco-ut</outputDirectory>
 						</configuration>
 					</execution>
 
@@ -213,7 +214,8 @@
 									</includes>
 								</FileSet>
 							</fileSets>
-							<destFile>${project.build.directory}/jacoco-merged.exec</destFile>
+							<destFile>
+								${project.build.directory}/jacoco-merged.exec</destFile>
 						</configuration>
 					</execution>
 					<execution>
@@ -223,8 +225,10 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-							<dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
-							<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+							<dataFile>
+								${project.build.directory}/jacoco-merged.exec</dataFile>
+							<outputDirectory>
+								${project.build.directory}/site/jacoco</outputDirectory>
 						</configuration>
 					</execution>
 
@@ -302,7 +306,12 @@
 									<goal>prepare-agent-integration</goal>
 								</goals>
 								<configuration>
-									<destFile>${project.build.directory}/jacoco-it.exec</destFile>
+									<excludes>
+										<exclude>**/dto/*</exclude>
+										<exclude>**/*DTO.*</exclude>
+									</excludes>
+									<destFile>
+										${project.build.directory}/jacoco-it.exec</destFile>
 								</configuration>
 							</execution>
 							<execution>
@@ -312,8 +321,10 @@
 									<goal>report-integration</goal>
 								</goals>
 								<configuration>
-									<dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
-									<outputDirectory>${project.build.directory}/site/jacoco-it</outputDirectory>
+									<dataFile>
+										${project.build.directory}/jacoco-it.exec</dataFile>
+									<outputDirectory>
+										${project.build.directory}/site/jacoco-it</outputDirectory>
 								</configuration>
 							</execution>
 						</executions>
