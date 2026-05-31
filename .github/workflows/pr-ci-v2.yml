@@ -1,4 +1,4 @@
-name: PR Main Pipeline
+name: PR Main Pipeline v2
 
 on:
   pull_request:
@@ -220,6 +220,7 @@ jobs:
       security-events: write
       contents: read
       actions: read
+      packages: write
 
     steps:
     - name: Code checkout
