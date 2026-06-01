@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -105,6 +106,7 @@ class CodeServiceTest {
 		assertThatThrownBy(() -> codeService.validateAlias(null))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("Alias cannot be null or blank");
+		verifyNoInteractions(repository);
 	}
 
 	/*
@@ -115,6 +117,7 @@ class CodeServiceTest {
 		assertThatThrownBy(() -> codeService.validateAlias("   "))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("Alias cannot be null or blank");
+		verifyNoInteractions(repository);
 	}
 
 	/*
@@ -125,6 +128,7 @@ class CodeServiceTest {
 		assertThatThrownBy(() -> codeService.validateAlias("ab"))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("Alias must be 3-32 characters long");
+		verifyNoInteractions(repository);
 	}
 
 	/*
@@ -135,6 +139,7 @@ class CodeServiceTest {
 		assertThatThrownBy(() -> codeService.validateAlias("ab!"))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("can only contain letters, digits, and underscores");
+		verifyNoInteractions(repository);
 	}
 
 	/*
