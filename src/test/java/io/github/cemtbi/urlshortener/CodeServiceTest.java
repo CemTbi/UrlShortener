@@ -29,6 +29,7 @@ class CodeServiceTest {
 	@InjectMocks
 	CodeService codeService;
 
+	// Code generation
 	/*
 	 * Returns code when the first attempt is unique.
 	 */
@@ -78,5 +79,75 @@ class CodeServiceTest {
 				.hasMessage("Failed to generate unique code");
 
 		verify(repository, times(10)).existsByCode(anyString());
+	}
+
+	// Alias validation
+	/*
+	 * Validates the format of the generated alias.
+	 */
+	@Test
+	void aliasValidation() {
+		// GIVEN
+		when(repository.existsByCode("my_alias123")).thenReturn(false);
+
+		// WHEN
+		String result = codeService.validateAlias("my_alias123");
+
+		// THEN
+		assertThat(result).isEqualTo("my_alias123");
+	}
+
+	/*
+	 * Validate that alias is not null.
+	 */
+	@Test
+	void aliasValidationNotNull() {
+		assertThatThrownBy(() -> codeService.validateAlias(null))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("Alias cannot be null or blank");
+	}
+
+	/*
+	 * Validate that alias is not blank.
+	 */
+	@Test
+	void aliasValidationNotBlank() {
+		assertThatThrownBy(() -> codeService.validateAlias("   "))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("Alias cannot be null or blank");
+	}
+
+	/*
+	 * Validate that alias must be 3-32 characters long.
+	 */
+	@Test
+	void aliasValidationLength() {
+		assertThatThrownBy(() -> codeService.validateAlias("ab"))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessageContaining("Alias must be 3-32 characters long");
+	}
+
+	/*
+	 * Validate that alias can only contain letters, digits, and underscores.
+	 */
+	@Test
+	void aliasValidationCharacters() {
+		assertThatThrownBy(() -> codeService.validateAlias("ab!"))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessageContaining("can only contain letters, digits, and underscores");
+	}
+
+	/*
+	 * Validate that alias does not already exist in the repository.
+	 */
+	@Test
+	void aliasValidationExists() {
+		// GIVEN
+		when(repository.existsByCode("my_alias123")).thenReturn(true);
+
+		// WHEN + THEN
+		assertThatThrownBy(() -> codeService.validateAlias("my_alias123"))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("Alias already in use");
 	}
 }
