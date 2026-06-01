@@ -1,6 +1,7 @@
 package io.github.cemtbi.urlshortener;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,10 +41,8 @@ class CodeServiceTest {
 		String code = codeService.generateUniqueCode();
 
 		// THEN
-		assertThat(code).isNotNull()
-                        .hasSize(7)
-                        .matches("^[\\w]+$");
-                        
+		assertThat(code).isNotNull().hasSize(7).matches("^[\\w]+$");
+
 		verify(repository, times(1)).existsByCode(anyString());
 	}
 
@@ -53,22 +52,31 @@ class CodeServiceTest {
 	@Test
 	void testUniqueCodeGenerationWithRetries() {
 		// GIVEN
-		when(repository.existsByCode(anyString()))
-			.thenReturn(true)  
-			.thenReturn(true) 
-			.thenReturn(true)
-			.thenReturn(true) 
-			.thenReturn(false); 
+		when(repository.existsByCode(anyString())).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(true)
+				.thenReturn(false);
 
 		// WHEN
 		String code = codeService.generateUniqueCode();
 
 		// THEN
-		assertThat(code).isNotNull()
-						.hasSize(7)
-						.matches("^[\\w]+$");
-						
+		assertThat(code).isNotNull().hasSize(7).matches("^[\\w]+$");
+
 		verify(repository, times(5)).existsByCode(anyString());
 	}
 
+	/*
+	 * Fails to generate a unique code after 10 attempts and throws an exception.
+	 */
+	@Test
+	void testUniqueCodeGenerationFailure() {
+		// GIVEN
+		when(repository.existsByCode(anyString())).thenReturn(true);
+
+		// WHEN + THEN
+		assertThatThrownBy(() -> codeService.generateUniqueCode())
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("Failed to generate unique code");
+
+		verify(repository, times(10)).existsByCode(anyString());
+	}
 }
