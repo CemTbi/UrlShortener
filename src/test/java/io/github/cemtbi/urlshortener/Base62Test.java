@@ -6,13 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import io.github.cemtbi.service.Base62;
 
-@SpringBootTest
-@ActiveProfiles("test")
 class Base62Test {
 
 	@Test
