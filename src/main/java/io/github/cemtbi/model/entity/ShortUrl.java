@@ -37,6 +37,9 @@ public class ShortUrl {
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
 	private Instant createdAt = Instant.now();
+	
+	@Column(nullable = true)
+	private Instant lastAccessedAt;
 
 	@NonNull
 	@Column(nullable = true)
