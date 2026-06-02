@@ -3,6 +3,9 @@ name: SonarQube on Main Branch
 on:
   push:
     branches: [ main ]
+ 
+permissions:
+  contents: read
 
 jobs:
   # Build job to compile the code and create a JAR artifact
