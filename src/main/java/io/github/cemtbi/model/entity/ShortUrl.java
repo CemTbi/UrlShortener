@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Url {
+public class ShortUrl {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Url {
 
 	@NonNull
 	@Column(nullable = false, length = 2048)
-	private String originalUrl;
+	private String url;
 
 	@NonNull
 	@Column(nullable = false, unique = true, length = 32)
