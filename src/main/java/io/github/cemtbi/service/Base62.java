@@ -4,9 +4,9 @@ import java.security.SecureRandom;
 
 import org.springframework.stereotype.Component;
 
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor
+@UtilityClass
 @Component
 public final class Base62 {
 
