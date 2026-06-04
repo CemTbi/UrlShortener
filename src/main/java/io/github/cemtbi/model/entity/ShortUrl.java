@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Table(name = "urls")
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public class ShortUrl {
 
@@ -26,13 +26,11 @@ public class ShortUrl {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	@Column(nullable = false, length = 2048)
-	private String url;
+	private final String url;
 
-	@NonNull
 	@Column(nullable = false, unique = true, length = 32)
-	private String code;
+	private final String code;
 
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
@@ -41,9 +39,8 @@ public class ShortUrl {
 	@Column(nullable = true)
 	private Instant lastAccessedAt;
 
-	@NonNull
 	@Column(nullable = true)
-	private Instant expiresAt;
+	private final Instant expiresAt;
 
 	@Column(nullable = false)
 	private long clickCount;
