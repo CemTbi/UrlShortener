@@ -36,7 +36,7 @@ public class ShortUrl {
 
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
-	private Instant createdAt = Instant.now();
+	private Instant createdAt;
 	
 	@Column(nullable = true)
 	private Instant lastAccessedAt;
@@ -46,6 +46,6 @@ public class ShortUrl {
 	private Instant expiresAt;
 
 	@Column(nullable = false)
-	private long clickCount = 0;
+	private long clickCount;
 
 }
