@@ -16,8 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import io.github.cemtbi.repository.UrlRepository;
-import io.github.cemtbi.service.CodeService;
+import io.github.cemtbi.urlshortener.repository.UrlRepository;
+import io.github.cemtbi.urlshortener.service.CodeService;
 
 @ExtendWith(MockitoExtension.class)
 class CodeServiceTest {

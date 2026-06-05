@@ -1,4 +1,4 @@
-package io.github.cemtbi.service;
+package io.github.cemtbi.urlshortener.service;
 
 import java.security.SecureRandom;
 
@@ -22,7 +22,7 @@ public final class Base62 {
 
 		StringBuilder sb = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
-            int randomIndex = RANDOM.nextInt(BASE);
+			int randomIndex = RANDOM.nextInt(BASE);
 			sb.append(ALPHABET.charAt(randomIndex));
 		}
 		return sb.toString();

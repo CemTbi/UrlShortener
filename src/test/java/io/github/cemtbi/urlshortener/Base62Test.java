@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.cemtbi.service.Base62;
+import io.github.cemtbi.urlshortener.service.Base62;
 
 class Base62Test {
 
