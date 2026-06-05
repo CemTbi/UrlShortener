@@ -10,6 +10,8 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,6 +28,7 @@ class CodeServiceTest {
 	@InjectMocks
 	CodeService codeService;
 
+	
 	// Code generation
 	/*
 	 * Returns code when the first attempt is unique.
@@ -44,13 +47,18 @@ class CodeServiceTest {
 		verify(repository, times(1)).existsByCode(anyString());
 	}
 
+	
 	/*
 	 * Successfully generates a unique code after multiple attempts.
 	 */
 	@Test
 	void testUniqueCodeGenerationWithRetries() {
 		// GIVEN
-		when(repository.existsByCode(anyString())).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(true)
+		when(repository.existsByCode(anyString()))
+				.thenReturn(true)
+				.thenReturn(true)
+				.thenReturn(true)
+				.thenReturn(true)
 				.thenReturn(false);
 
 		// WHEN
@@ -62,6 +70,7 @@ class CodeServiceTest {
 		verify(repository, times(5)).existsByCode(anyString());
 	}
 
+	
 	/*
 	 * Fails to generate a unique code after 10 attempts and throws an exception.
 	 */
@@ -78,6 +87,7 @@ class CodeServiceTest {
 		verify(repository, times(10)).existsByCode(anyString());
 	}
 
+	
 	// Alias validation
 	/*
 	 * Validates the format of the generated alias.
@@ -94,28 +104,20 @@ class CodeServiceTest {
 		assertThat(result).isEqualTo("my_alias123");
 	}
 
+	
 	/*
-	 * Validate that alias is not null.
+	 * Validate that alias is not null or blank.
 	 */
-	@Test
-	void aliasValidationNotNull() {
-		assertThatThrownBy(() -> codeService.validateAlias(null))
+	@ParameterizedTest
+	@NullAndEmptySource
+	void aliasValidationNotNullorBlank(String invalidAlias) {
+		assertThatThrownBy(() -> codeService.validateAlias(invalidAlias))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("Alias cannot be null or blank");
 		verifyNoInteractions(repository);
 	}
 
-	/*
-	 * Validate that alias is not blank.
-	 */
-	@Test
-	void aliasValidationNotBlank() {
-		assertThatThrownBy(() -> codeService.validateAlias("   "))
-				.isInstanceOf(IllegalArgumentException.class)
-				.hasMessage("Alias cannot be null or blank");
-		verifyNoInteractions(repository);
-	}
-
+	
 	/*
 	 * Validate that alias must be 3-32 characters long.
 	 */
@@ -127,6 +129,7 @@ class CodeServiceTest {
 		verifyNoInteractions(repository);
 	}
 
+	
 	/*
 	 * Validate that alias can only contain letters, digits, and underscores.
 	 */
@@ -138,6 +141,7 @@ class CodeServiceTest {
 		verifyNoInteractions(repository);
 	}
 
+	
 	/*
 	 * Validate that alias does not already exist in the repository.
 	 */
