@@ -1,4 +1,4 @@
-package io.github.cemtbi.urlshortener;
+package io.github.cemtbi.urlshortener.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.cemtbi.urlshortener.repository.UrlRepository;
-import io.github.cemtbi.urlshortener.service.CodeService;
 
 @ExtendWith(MockitoExtension.class)
 class CodeServiceTest {
