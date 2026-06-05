@@ -1,4 +1,4 @@
-package io.github.cemtbi.urlshortener;
+package io.github.cemtbi.urlshortener.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-
-import io.github.cemtbi.urlshortener.service.Base62;
 
 class Base62Test {
 
