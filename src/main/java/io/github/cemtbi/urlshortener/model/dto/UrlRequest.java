@@ -1,4 +1,4 @@
-package io.github.cemtbi.model.dto;
+package io.github.cemtbi.urlshortener.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

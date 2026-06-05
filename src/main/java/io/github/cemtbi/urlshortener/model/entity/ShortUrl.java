@@ -1,4 +1,4 @@
-package io.github.cemtbi.model.entity;
+package io.github.cemtbi.urlshortener.model.entity;
 
 import java.time.Instant;
 
@@ -34,7 +34,7 @@ public class ShortUrl {
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
 	private Instant createdAt;
-	
+
 	@Column(nullable = true)
 	private Instant lastAccessedAt;
 
