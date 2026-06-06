@@ -1,8 +1,8 @@
 package io.github.cemtbi.urlshortener.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -33,9 +33,8 @@ class Base62Test {
 
 	@Test
 	void testInvalidLength() {
-		// 4. Test: Does the method throw an exception as expected for invalid length?
-		assertThrows(IllegalArgumentException.class, () -> {
-			Base62.randomCode(0);
-		});
+		assertThatThrownBy(() -> Base62.randomCode(0))
+		.isInstanceOf(IllegalArgumentException.class)
+		.hasMessage("Length must be greater than 0");
 	}
 }
