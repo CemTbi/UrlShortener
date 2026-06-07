@@ -5,5 +5,4 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=CemTbi_UrlShortener&metric=reliability_rating&token=22d62a353d7d5fb8cb13d823b8f5a99bcb586f67)](https://sonarcloud.io/summary/new_code?id=CemTbi_UrlShortener)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=CemTbi_UrlShortener&metric=security_rating&token=22d62a353d7d5fb8cb13d823b8f5a99bcb586f67)](https://sonarcloud.io/summary/new_code?id=CemTbi_UrlShortener)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=CemTbi_UrlShortener&metric=sqale_rating&token=22d62a353d7d5fb8cb13d823b8f5a99bcb586f67)](https://sonarcloud.io/summary/new_code?id=CemTbi_UrlShortener)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=CemTbi_UrlShortener&metric=sqale_index&token=22d62a353d7d5fb8cb13d823b8f5a99bcb586f67)](https://sonarcloud.io/summary/new_code?id=CemTbi_UrlShortener)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=CemTbi_UrlShortener&metric=vulnerabilities&token=22d62a353d7d5fb8cb13d823b8f5a99bcb586f67)](https://sonarcloud.io/summary/new_code?id=CemTbi_UrlShortener)
