@@ -48,12 +48,9 @@ class UrlServiceTest {
 	@Test
 	void createShortUrl_withValidCustomAlias_returnsShortUrlWithAlias() {
 		//GIVEN 
-		UrlRequest request = new UrlRequest();
-		request.setUrl("https://example.de");
-		request.setAlias("my_alias123");
-		request.setExpiryDays(7);
+		UrlRequest request = new UrlRequest("https://example.de", "my_alias123", 7);
 		
-		when(codeService.validateAlias(request.getAlias())).thenReturn(request.getAlias());
+		when(codeService.validateAlias(request.alias())).thenReturn(request.alias());
 		when(repository.save(any(ShortUrl.class))).thenAnswer(i -> i.getArgument(0));
 		
 		//WHEN
@@ -61,10 +58,10 @@ class UrlServiceTest {
 		
 		//THEN
 		assertThat(result).isNotNull();
-		assertThat(result.getUrl()).isEqualTo(request.getUrl());
-		assertThat(result.getCode()).isEqualTo(request.getAlias());
+		assertThat(result.getUrl()).isEqualTo(request.url());
+		assertThat(result.getCode()).isEqualTo(request.alias());
 		
-		verify(codeService).validateAlias(request.getAlias());
+		verify(codeService).validateAlias(request.alias());
 		verify(repository).save(any(ShortUrl.class));
 		verify(codeService, never()).generateUniqueCode();
 	}
@@ -75,10 +72,7 @@ class UrlServiceTest {
 	@ValueSource(strings = {" ", "   "})
 	void createShortUrl_withMissingOrBlankAlias_generatesRandomUniqueCode(String invalidAlias) {
 		//GIVEN 
-		UrlRequest request = new UrlRequest();
-		request.setUrl("https://example.de");
-		request.setAlias(invalidAlias);
-		request.setExpiryDays(7);
+		UrlRequest request = new UrlRequest("https://example.de", invalidAlias, 7);
 		
 		String code = Base62.randomCode(7);
 		when(codeService.generateUniqueCode()).thenReturn(code);
@@ -89,7 +83,7 @@ class UrlServiceTest {
 		
 		//THEN
 		assertThat(result.getCode()).isEqualTo(code);
-		assertThat(result.getUrl()).isEqualTo(request.getUrl());
+		assertThat(result.getUrl()).isEqualTo(request.url());
 		
 		verify(codeService).generateUniqueCode();
 		verify(codeService, never()).validateAlias(any());
@@ -102,12 +96,9 @@ class UrlServiceTest {
 	@ValueSource(ints = 0)
 	void createShortUrl_withMissingOrZeroExpiryDays_setsNoExpirationDay(Integer invalidExpiryDays) {
 		//GIVEN 
-		UrlRequest request = new UrlRequest();
-		request.setUrl("https://example.de");
-		request.setAlias("my_alias123");
-		request.setExpiryDays(invalidExpiryDays);
+		UrlRequest request = new UrlRequest("https://example.de", "my_alias123", invalidExpiryDays);
 		
-		when(codeService.validateAlias(request.getAlias())).thenReturn(request.getAlias());
+		when(codeService.validateAlias(request.alias())).thenReturn(request.alias());
 		when(repository.save(any(ShortUrl.class))).thenAnswer(i -> i.getArgument(0));
 		
 		//WHEN
@@ -115,7 +106,7 @@ class UrlServiceTest {
 		
 		//THEN
 		assertThat(result.getExpiresAt()).isNull(); 
-		assertThat(result.getUrl()).isEqualTo(request.getUrl());
+		assertThat(result.getUrl()).isEqualTo(request.url());
 		verify(repository).save(any(ShortUrl.class));
 	}
 	
