@@ -21,12 +21,12 @@ public class UrlService {
 	private final CodeService codeService;
 
 	public ShortUrl createShortUrl(UrlRequest request) {
-		String url = normalizeUrl(request.getUrl());
-		String code = (request.getAlias() != null && !request.getAlias().isBlank())
-				? codeService.validateAlias(request.getAlias().trim())
+		String url = normalizeUrl(request.url());
+		String code = (request.alias() != null && !request.alias().isBlank())
+				? codeService.validateAlias(request.alias().trim())
 				: codeService.generateUniqueCode();
 
-		Instant expiresAt = calculateExpiryDays(request.getExpiryDays());
+		Instant expiresAt = calculateExpiryDays(request.expiryDays());
 
 		ShortUrl shortUrl = new ShortUrl(url, code, expiresAt);
 		return repository.save(shortUrl);

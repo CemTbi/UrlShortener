@@ -2,12 +2,9 @@ package io.github.cemtbi.urlshortener.service;
 
 import java.security.SecureRandom;
 
-import org.springframework.stereotype.Component;
-
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-@Component
 public final class Base62 {
 
 	private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
