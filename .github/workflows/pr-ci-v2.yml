@@ -3,6 +3,7 @@ name: PR Main Pipeline v2
 on:
   pull_request:
     branches: [ main ]
+    types: [ opened, synchronize, reopened ]
 
 permissions:
   contents: read
@@ -179,7 +180,8 @@ jobs:
       contents: read
       actions: read
       packages: write
-
+      
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
     - name: Code checkout
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -244,6 +246,7 @@ jobs:
 
     # Trivy image scan job to perform security scanning on the built Docker image
     - name: Run Trivy image scan
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
       with:
         image-ref: 'urlshortener:latest'
@@ -253,7 +256,7 @@ jobs:
         vuln-type: 'os'
         severity: 'CRITICAL,HIGH'
         output: 'trivy-image-results.sarif'
-        
+    
     - name: Upload SARIF to GitHub Security tab
       if: always()
       uses: github/codeql-action/upload-sarif@7851e55dc3be31ec4bcc3ef98453de2cb306e698 # v4.35.3
