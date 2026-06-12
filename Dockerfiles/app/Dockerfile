@@ -10,6 +10,10 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
+RUN apk update && \
+    apk upgrade openssl libcrypto3 && \
+    rm -rf /var/cache/apk/*
+
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
