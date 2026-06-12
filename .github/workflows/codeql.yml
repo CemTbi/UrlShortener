@@ -1,0 +1,11 @@
+name: "Code Scanning Trigger"
+on:
+  push:
+    branches: [ "main" ] 
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hardening Dashboard Enable
+        run: echo "Dummy"
