@@ -9,10 +9,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +25,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.cemtbi.urlshortener.model.dto.UrlRequest;
@@ -37,8 +41,19 @@ class UrlServiceTest {
 	@Mock
 	private CodeService codeService;
 	
+	@Mock
+	private Clock clock;
+	
 	@InjectMocks
 	private UrlService urlService;
+
+	private final Instant NOW = Instant.parse("2026-06-10T12:00:00Z");
+
+	@BeforeEach
+	void setUpClock() {
+		Mockito.lenient().when(clock.instant()).thenReturn(NOW);
+	    Mockito.lenient().when(clock.getZone()).thenReturn(ZoneId.of("UTC"));
+	}
 
 	
 	//------------------------------------------------------------
@@ -159,7 +174,7 @@ class UrlServiceTest {
 	@ValueSource(ints = 7)
 	void findActiveUrl_withExisitngAndNonExpiredUrl_returnsOptionalWithShortUrl(Integer days) {
 		// GIVEN
-		ShortUrl shortUrl = new ShortUrl(null, Base62.randomCode(7), UrlService.calculateExpiryDays(days));
+		ShortUrl shortUrl = new ShortUrl(null, Base62.randomCode(7), UrlService.calculateExpiryDays(days, clock));
 		
 		when(repository.findByCode(shortUrl.getCode())).thenReturn(Optional.of(shortUrl));
 		
@@ -171,7 +186,7 @@ class UrlServiceTest {
         assertThat(result.get().getCode()).isEqualTo(shortUrl.getCode());
         assertThat(result.get().getExpiresAt()).satisfiesAnyOf(
             expiresAt -> assertThat(expiresAt).isNull(),
-            expiresAt -> assertThat(expiresAt).isAfter(Instant.now())
+            expiresAt -> assertThat(expiresAt).isAfter(Instant.now(clock))
         );
 		
 		verify(repository).findByCode(shortUrl.getCode());
@@ -181,7 +196,7 @@ class UrlServiceTest {
 	@Test
 	void findActiveUrl_withExpiredUrl_returnsEmptyOptional() {
 		// GIVEN
-		ShortUrl expired = new ShortUrl(null, Base62.randomCode(7), Instant.now().minus(1, ChronoUnit.DAYS));
+		ShortUrl expired = new ShortUrl(null, Base62.randomCode(7), Instant.now(clock).minus(1, ChronoUnit.DAYS));
 		
 		when(repository.findByCode(expired.getCode())).thenReturn(Optional.of(expired));
 		
@@ -216,7 +231,7 @@ class UrlServiceTest {
 	@Test
 	void clickEvent_calledOnce_accmulatesClickCount() {
 		// GIVEN
-		ShortUrl shortUrl = new ShortUrl(null, Base62.randomCode(7), Instant.now().plus(1, ChronoUnit.DAYS));
+		ShortUrl shortUrl = new ShortUrl(null, Base62.randomCode(7), UrlService.calculateExpiryDays(1, clock));
 		long countBefore = shortUrl.getClickCount();
 		when(repository.save(any(ShortUrl.class))).thenAnswer(i -> i.getArgument(0));
 		
@@ -226,7 +241,7 @@ class UrlServiceTest {
 		// THEN
 		assertThat(shortUrl.getClickCount()).isEqualTo(countBefore + 1);
 		assertThat(shortUrl.getLastAccessedAt()).isNotNull()
-			.isAfterOrEqualTo(Instant.now().minusSeconds(2));
+			.isAfterOrEqualTo(Instant.now(clock).minusSeconds(2));
 		
 		verify(repository).save(any(ShortUrl.class));
 	}

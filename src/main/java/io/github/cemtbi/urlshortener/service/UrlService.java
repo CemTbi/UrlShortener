@@ -2,6 +2,7 @@ package io.github.cemtbi.urlshortener.service;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class UrlService {
 
 	private final UrlRepository repository;
 	private final CodeService codeService;
+	private final Clock clock;
 
 	public ShortUrl createShortUrl(UrlRequest request) {
 		String url = normalizeUrl(request.url());
@@ -26,14 +28,14 @@ public class UrlService {
 				? codeService.validateAlias(request.alias().trim())
 				: codeService.generateUniqueCode();
 
-		Instant expiresAt = calculateExpiryDays(request.expiryDays());
+		Instant expiresAt = calculateExpiryDays(request.expiryDays(), clock);
 
 		ShortUrl shortUrl = new ShortUrl(url, code, expiresAt);
 		return repository.save(shortUrl);
 	}
 
-	static Instant calculateExpiryDays(Integer expiryDays) {
-		return (expiryDays != null && expiryDays > 0) ? Instant.now().plus(expiryDays, ChronoUnit.DAYS) : null;
+	static Instant calculateExpiryDays(Integer expiryDays, Clock clock) {
+		return (expiryDays != null && expiryDays > 0) ? Instant.now(clock).plus(expiryDays, ChronoUnit.DAYS) : null;
 	}
 
 	static String normalizeUrl(String url) {
