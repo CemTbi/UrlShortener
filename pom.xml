@@ -152,6 +152,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>${skip.surefire.tests}</skipTests>
+				</configuration>
+			</plugin>
+
+			<!-- Failsafe Integration Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 
 			<plugin>
@@ -180,9 +189,6 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-						<configuration>
-							<destFile>${project.build.directory}/jacoco-ut.exec</destFile>
-						</configuration>
 					</execution>
 					<execution>
 						<id>report-ut</id>
@@ -191,10 +197,30 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-							<dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
 							<outputDirectory>
 								${project.build.directory}/site/jacoco-ut</outputDirectory>
 						</configuration>
+					</execution>
+
+					<!-- Integration Tests -->
+					<execution>
+						<id>prepare-agent-it</id>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/dto/*</exclude>
+								<exclude>**/*DTO.*</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>report-it</id>
+						<goals>
+							<goal>report-integration</goal>
+						</goals>
 					</execution>
 
 				</executions>
@@ -239,69 +265,4 @@
 
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>integration-tests</id>
-			<build>
-				<plugins>
-				
-					<!-- Failsafe Integration Tests -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<!-- JaCoCo for Integration Tests -->
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>${jacoco.version}</version>
-						<executions>
-						
-							<execution>
-								<id>prepare-agent-it</id>
-								<goals>
-									<goal>prepare-agent-integration</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>**/dto/*</exclude>
-										<exclude>**/*DTO.*</exclude>
-									</excludes>
-									<destFile>
-										${project.build.directory}/jacoco-it.exec</destFile>
-								</configuration>
-							</execution>
-							
-							<execution>
-								<id>report-it</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>report-integration</goal>
-								</goals>
-								
-								<configuration>
-									<dataFile>
-										${project.build.directory}/jacoco-it.exec</dataFile>
-									<outputDirectory>
-										${project.build.directory}/site/jacoco-it</outputDirectory>
-								</configuration>
-							</execution>
-							
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 </project>
