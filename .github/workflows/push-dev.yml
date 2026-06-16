@@ -86,4 +86,4 @@ jobs:
         restore-keys: ${{ runner.os }}-maven-
 
     - name: Run Integration Tests
-      run: mvn verify -Pintegration-tests -DskipUnitTests
+      run: mvn verify -Dsurefire.skip=true
