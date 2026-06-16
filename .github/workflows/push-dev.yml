@@ -32,7 +32,7 @@ jobs:
         restore-keys: ${{ runner.os }}-maven-
 
     - name: Maven Build
-      run: mvn clean package -DskipTests
+      run: mvn clean package -Dmaven.test.skip=true
 
 
   # Unit tests job to run tests on the main branch
