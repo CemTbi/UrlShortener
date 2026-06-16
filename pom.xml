@@ -181,6 +181,14 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco.version}</version>
+
+				<configuration>
+					<excludes>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/UrlshortenerApplication.class</exclude>
+					</excludes>
+				</configuration>
+
 				<executions>
 
 					<!-- Unit Tests -->
@@ -208,14 +216,7 @@
 						<goals>
 							<goal>prepare-agent-integration</goal>
 						</goals>
-						<configuration>
-							<excludes>
-								<exclude>**/dto/*</exclude>
-								<exclude>**/*DTO.*</exclude>
-							</excludes>
-						</configuration>
 					</execution>
-
 					<execution>
 						<id>report-it</id>
 						<goals>
