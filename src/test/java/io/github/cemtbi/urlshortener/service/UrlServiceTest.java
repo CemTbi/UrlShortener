@@ -47,12 +47,12 @@ class UrlServiceTest {
 	@InjectMocks
 	private UrlService urlService;
 
-	private final Instant NOW = Instant.parse("2026-06-16T12:00:00Z");
+	private final Instant now = Instant.parse("2026-06-16T12:00:00Z");
 
 	@BeforeEach
 	void setUpClock() {
 		
-		Clock fixedClock = Clock.fixed(NOW, ZoneId.of("UTC"));
+		Clock fixedClock = Clock.fixed(now, ZoneId.of("UTC"));
 		
 		Mockito.lenient().when(clock.instant()).thenReturn(fixedClock.instant());
 	    Mockito.lenient().when(clock.getZone()).thenReturn(fixedClock.getZone());
