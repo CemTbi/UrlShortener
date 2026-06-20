@@ -15,5 +15,9 @@ RUN apk update && \
     rm -rf /var/cache/apk/*
 
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 10000
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=5 \
+  CMD wget -qO- http://localhost:10000/actuator/health | grep UP || exit 1
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
