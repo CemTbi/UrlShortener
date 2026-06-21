@@ -11,7 +11,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 RUN apk update && \
-    apk upgrade openssl libcrypto3 && \
+    apk upgrade openssl libcrypto3 libexpat && \
     rm -rf /var/cache/apk/*
 
 COPY --from=build /app/target/*.jar app.jar
