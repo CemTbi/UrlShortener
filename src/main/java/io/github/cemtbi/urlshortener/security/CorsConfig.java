@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/**") // Every Endpoint
                         .allowedOrigins(
                             "http://localhost:3000",      // Local Testing
-                            "https://github.io" 
+                            "https://cemtbi.github.io/UrlShortenerWeb/" 
                         )
                         .allowedMethods("GET", "POST", "OPTIONS") 
                         .allowedHeaders("*") 
