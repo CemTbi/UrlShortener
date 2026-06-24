@@ -47,7 +47,7 @@ class UrlServiceTest {
 	@InjectMocks
 	private UrlService urlService;
 
-	private final Instant now = Instant.parse("2026-06-16T12:00:00Z");
+	private final Instant now = Instant.parse("2026-06-10T12:00:00Z");
 
 	@BeforeEach
 	void setUpClock() {
@@ -189,7 +189,7 @@ class UrlServiceTest {
         assertThat(result.get().getCode()).isEqualTo(shortUrl.getCode());
         assertThat(result.get().getExpiresAt()).satisfiesAnyOf(
             expiresAt -> assertThat(expiresAt).isNull(),
-            expiresAt -> assertThat(expiresAt).isAfter(Instant.now(clock))
+            expiresAt -> assertThat(expiresAt).isAfter(now)
         );
 		
 		verify(repository).findByCode(shortUrl.getCode());

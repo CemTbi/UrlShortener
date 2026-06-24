@@ -61,7 +61,7 @@ public class UrlService {
 
 	public Optional<ShortUrl> findActiveUrl(String code) {
 		return repository.findByCode(code)
-				.filter(url -> url.getExpiresAt() == null || url.getExpiresAt().isAfter(Instant.now()));
+				.filter(url -> url.getExpiresAt() == null || url.getExpiresAt().isAfter(Instant.now(clock)));
 	}
 
 	public void clickEvent(ShortUrl shortUrl) {
