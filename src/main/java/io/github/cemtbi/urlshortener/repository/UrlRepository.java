@@ -1,9 +1,11 @@
 package io.github.cemtbi.urlshortener.repository;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.cemtbi.urlshortener.model.entity.ShortUrl;
 
@@ -12,4 +14,7 @@ public interface UrlRepository extends JpaRepository<ShortUrl, Long> {
 	Optional<ShortUrl> findByCode(String code);
 
 	boolean existsByCode(String code);
+	
+	@Transactional
+	void deleteByExpiresAtBefore(Instant now);
 }
