@@ -16,5 +16,5 @@ public interface UrlRepository extends JpaRepository<ShortUrl, Long> {
 	boolean existsByCode(String code);
 	
 	@Transactional
-	void deleteByExpiresAtBefore(Instant now);
+	int deleteByExpiresAtBefore(Instant now);
 }
