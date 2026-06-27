@@ -27,11 +27,8 @@ public class UrlCleanupService {
 		
 		Instant now = Instant.now(clock);
 		
-		urlRepository.deleteByExpiresAtBefore(now);
+		Integer deletedCount = urlRepository.deleteByExpiresAtBefore(now);
 		
-		log.info("Database cleanup completed.");
+		log.info("Database cleanup completed. Deleted {} expired urls.", deletedCount);
 	}
-	
-	
-
 }
