@@ -16,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class UrlCleanupService {
 	
 	private static final Logger log = LoggerFactory.getLogger(UrlCleanupService.class);
-	
 	private final UrlRepository urlRepository;
-	
 	private final Clock clock;
 	
 	@Scheduled(cron = "0 0 2 * * ?")
