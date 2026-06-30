@@ -13,7 +13,7 @@ A robust and efficient URL shortener service built with Java and Spring Boot. Th
 *   **Rate Limiting:** Protects the creation endpoint from abuse with IP-based rate limiting (10 requests/minute).
 *   **Scheduled Cleanup:** Automatically removes expired URLs from the database daily.
 *   **Containerized:** Includes a `Dockerfile` for easy deployment and scaling.
-*   **CORS Support:** Configured for integration with web frontends (e.g., from `localhost:3000` and `cemtbi.github.io`).
+*   **CORS Support:** Configured for integration with web frontends (e.g., from `localhost:3000` (for testing) and `cemtbi.github.io`).
 
 ## Technology Stack
 
